@@ -1,0 +1,71 @@
+<!--
+  Generated template for the Controls page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Controls</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<div id="daw" class="daw">
+		<div (mouseup)="MoveUpMouseUp()">
+		  <button ion-button (mousedown)="MoveUpMouseDown()" >
+		    Move Up
+		  </button>
+	  </div>
+
+	  <div (mouseup)="MoveDownMouseUp()">
+		  <button ion-button (mousedown)="MoveDownMouseDown()">
+		    Move Down
+		  </button>
+	  </div>
+
+<!-- 	  <div class="item range">
+		  <i class="icon ion-ios-lightbulb-outline"></i>
+		  <input type="range" name="brightness" min="0" max="100" value="50" (input)="SetSliderBrightness($event)">
+		  <i class="icon ion-ios-lightbulb"></i>
+		</div>
+
+	  <div class="item range red">
+		  <i class="icon ion-ios-lightbulb-outline"></i>
+		  <input type="range" name="ledr" min="0" max="100" value="50" (input)="SetLEDR($event)">
+		  <i class="icon ion-ios-lightbulb"></i>
+		</div>
+
+	  <div class="item range green">
+		  <i class="icon ion-ios-lightbulb-outline"></i>
+		  <input type="range" name="ledg" min="0" max="100" value="50" (input)="SetLEDG($event)">
+		  <i class="icon ion-ios-lightbulb"></i>
+		</div>
+
+	  <div class="item range blue">
+		  <i class="icon ion-ios-lightbulb-outline"></i>
+		  <input type="range" name="ledb" min="0" max="100" value="50" (input)="SetLEDB($event)">
+		  <i class="icon ion-ios-lightbulb"></i>
+		</div> -->
+
+		<div id="nexus"></div>
+	  <div class="controls">
+			<input class="time-slider" type="range" value="0" (input)="TimeSlider($event)" />
+			<button ion-button class="play-pause button"  type="button" value=">" (click)="PlayPause()">play</button>
+			<button ion-button class="zoom-minus button" type="button" value="-" (click)="ZoomMinus()">-</button>
+			<div class="zoom-value button" type="button"></div>
+			<button ion-button class="zoom-plus button" type="button" value="+" (click)="ZoomPlus()">+</button>
+			<!-- <div class="color-picker"></div> -->
+			<input [(colorPicker)]="color" [style.background]="color" [value]="color"/>
+			<div class="current-color"></div>
+			<button ion-button type="button" class="switch button" value="rgb" (click)="Switch()">switch</button>
+			<button ion-button type="button" class="save button" value="save" (click)="Save()">save</button>
+			<button ion-button type="button" class="delete button" value="delete" (click)="Delete()">delete</button>
+		</div>
+  </div>
+
+</ion-content>
