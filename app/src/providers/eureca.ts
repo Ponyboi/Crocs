@@ -46,6 +46,6 @@ export class EurecaClient {
     this.eurecaServer.SetLED(1, rgb);
   }
   PlayPause(state) {
-    this.eurecaServer.PausePlay(state);
+    this.eurecaServer.PlayPause(state);
   }
 }

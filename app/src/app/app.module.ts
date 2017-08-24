@@ -14,8 +14,7 @@ import { ColorPickerModule } from 'angular2-color-picker';
     ControlsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
-    ColorPickerModule
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

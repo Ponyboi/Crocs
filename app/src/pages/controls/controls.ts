@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EurecaClient } from '../../providers/eureca';
-import {ColorPickerService} from 'angular2-color-picker';
+// import {ColorPickerService} from 'angular2-color-picker';
 // import { ColorPicker } from '../../models/colorpicker';
 // import {ColorPickerDirective} from 'ct-angular2-color-picker/component'
 /*
@@ -21,7 +21,8 @@ declare var instance: any;
 })
 export class ControlsPage {
   private color: string = "#127bdc";
-  constructor(public navCtrl: NavController, public eureca: EurecaClient, private cpService: ColorPickerService) {}
+  private data: any;
+  constructor(public navCtrl: NavController, public eureca: EurecaClient) {} //private cpService: ColorPickerService
   ionViewDidLoad() {
     console.log('Hello ControlsPage Page');
     this.Init();
@@ -32,7 +33,6 @@ export class ControlsPage {
   // Automation
   rgb = {r: 50, g: 50, b: 50};
   master = { zoom: 4, slider: 0, cpService: {} };
-  data = JSON.parse(localStorage.getItem("data"));
   current = { currentDevice: 0, mode: "rgb" };
   envelope:any = {};
   waveform:any = {};
@@ -90,7 +90,7 @@ export class ControlsPage {
   PlayPause() {
 
   var offset = this.waveform.val.start * (this.waveform.duration/(this.waveform.duration/this.master.zoom));
-
+  console.log(this.eureca);
   if (this.player.state == "stopped") {
     this.eureca.PlayPause({ state: 'play' });
 
@@ -297,7 +297,7 @@ export class ControlsPage {
     this.waveform.zoom = sampleGrouping;
     this.envelope.zoom = sampleGrouping;
     // this.master.colorPicker = this.GenerateColorPicker();
-    this.master.cpService = this.cpService;
+    // this.master.cpService = this.cpService;
     this.envelope.master = this.master;
     this.waveform.master = this.master;
     this.FullDraw();

@@ -60,7 +60,8 @@ var eurecaServer = new Eureca.Server({allow:[
     'MoveDownMouseDown', 
     'MoveDownMouseUp',
     'SetSliderBrightness',
-    'SetLED'
+    'SetLED',
+    'PlayPause'
     ]});
 
 //attach eureca.io to our http server
@@ -109,7 +110,10 @@ eurecaServer.exports.ServerStatus = function ()
     client.write('{ "type": "CONTROLLER", "state": "STATUS" }');
     console.log("ServerStatus");
 }
-
+eurecaServer.exports.PlayPause = function (state) 
+{
+    // console.log("PlayPause");
+}
 eurecaServer.exports.MoveUpMouseDown = function () 
 {
     client.write('{ "type": "controller", "state": "motor", "command": "MoveUpMouseDown" }');
