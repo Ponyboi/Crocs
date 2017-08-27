@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { EurecaClient } from '../../providers/eureca';
-import {ColorPickerService} from 'angular2-color-picker';
-// import { ColorPicker } from '../../models/colorpicker';
-// import {ColorPickerDirective} from 'ct-angular2-color-picker/component'
+import { WSClient } from '../../providers/ws';
+// import { EurecaClient } from '../../providers/eureca';
 /*
   Generated class for the Controls page.
 
@@ -21,7 +19,7 @@ declare var instance: any;
 })
 export class ControlsPage {
   private color: string = "#127bdc";
-  constructor(public navCtrl: NavController, public eureca: EurecaClient, private cpService: ColorPickerService) {}
+  constructor(public navCtrl: NavController, public ws: WSClient) {}
   ionViewDidLoad() {
     console.log('Hello ControlsPage Page');
     this.Init();
@@ -31,7 +29,7 @@ export class ControlsPage {
 
   // Automation
   rgb = {r: 50, g: 50, b: 50};
-  master = { zoom: 4, slider: 0, cpService: {} };
+  master = { zoom: 4, slider: 0 };
   data = JSON.parse(localStorage.getItem("data"));
   current = { currentDevice: 0, mode: "rgb" };
   envelope:any = {};
@@ -46,79 +44,63 @@ export class ControlsPage {
   currentRGB = { r: 50, g: 50, b: 50 };
   screenWidth = 0;
 
-  MoveUpMouseDown() {
-  	this.eureca.MoveUpMouseDown();
-  	console.log("MUC");
-  }
-  MoveUpMouseUp() {
-  	this.eureca.MoveUpMouseUp();
-  	console.log("MUK");
-  }
-  MoveDownMouseDown() {
-  	this.eureca.MoveDownMouseDown();
-  	console.log("MDC");
-  }
-  MoveDownMouseUp() {
-  	this.eureca.MoveDownMouseUp();
-  	console.log("MDK");
-  }
-  SetSliderBrightness(event) {
-  	this.eureca.SetSliderBrightness(1, event.currentTarget.value);
-  	console.log("Slider B", event);
-  }
-  SetLEDR(event) {
-  	this.rgb.r = event.currentTarget.value;
-  	this.eureca.SetLED(this.rgb);
-  	console.log("LEDR", event);
-  }
-  SetLEDG(event) {
-  	this.rgb.g = event.currentTarget.value;
-  	this.eureca.SetLED(this.rgb);
-  	console.log("LEDG", event);
-  }
-  SetLEDB(event) {
-  	this.rgb.b = event.currentTarget.value;
-  	this.eureca.SetLED(this.rgb);
-  	console.log("LEDB", event);
-  }
-  ServerStatus() {
-  	this.eureca.ServerStatus();
-  	console.log("ServerStatus", event);
-  }
+  // SetSliderBrightness(event) {
+  // 	this.eureca.SetSliderBrightness(1, event.currentTarget.value);
+  // 	console.log("Slider B", event);
+  // }
+  // SetLEDR(event) {
+  // 	this.rgb.r = event.currentTarget.value;
+  // 	this.eureca.SetLED(this.rgb);
+  // 	console.log("LEDR", event);
+  // }
+  // SetLEDG(event) {
+  // 	this.rgb.g = event.currentTarget.value;
+  // 	this.eureca.SetLED(this.rgb);
+  // 	console.log("LEDG", event);
+  // }
+  // SetLEDB(event) {
+  // 	this.rgb.b = event.currentTarget.value;
+  // 	this.eureca.SetLED(this.rgb);
+  // 	console.log("LEDB", event);
+  // }
+  // ServerStatus() {
+  // 	this.eureca.ServerStatus();
+  // 	console.log("ServerStatus", event);
+  // }
 
   // Audio
   PlayPause() {
+    this.ws.PlayPause({ state: 'play' });
 
-  var offset = this.waveform.val.start * (this.waveform.duration/(this.waveform.duration/this.master.zoom));
+    var offset = this.waveform.val.start * (this.waveform.duration/(this.waveform.duration/this.master.zoom));
 
-  if (this.player.state == "stopped") {
-    this.eureca.PlayPause({ state: 'play' });
+    if (this.player.state == "stopped") {
 
-    $(this).val("||");
-    var duration = (this.waveform.val.stop - this.waveform.val.start) * this.master.zoom;
-    if (this.waveform.val.stop - this.waveform.val.start < 0.003) {
-      duration = 9999999;
-    }
-    this.player.start(0, offset, duration);
-
-      //find starting point
-    this.startIndex = 0;
-    //var offset = waveform.val.start * (waveform.duration/(waveform.duration/master.zoom));
-    var points = this.envelope.val.points;
-    for (var i=0; i < points.length; i++) {
-      if (points[i].x > offset && i > 0) {
-        this.startIndex = i-1;
-        this.drawRGBTime = offset;
-        this.drawRGBTimeNow = Date.now();
-        this.drawRGBTimeOld = Date.now();
-        i = points.length;
-        break;
+      $(this).val("||");
+      var duration = (this.waveform.val.stop - this.waveform.val.start) * this.master.zoom;
+      if (this.waveform.val.stop - this.waveform.val.start < 0.003) {
+        duration = 9999999;
       }
-    }
-    //myTimer();
-    this.drawRGBInterval = setInterval(function(){ this.myTimer() }, 20);
+      this.player.start(0, offset, duration);
+
+        //find starting point
+      this.startIndex = 0;
+      //var offset = waveform.val.start * (waveform.duration/(waveform.duration/master.zoom));
+      var points = this.envelope.val.points;
+      for (var i=0; i < points.length; i++) {
+        if (points[i].x > offset && i > 0) {
+          this.startIndex = i-1;
+          this.drawRGBTime = offset;
+          this.drawRGBTimeNow = Date.now();
+          this.drawRGBTimeOld = Date.now();
+          i = points.length;
+          break;
+        }
+      }
+      //myTimer();
+      this.drawRGBInterval = setInterval(function(){ this.myTimer() }, 20);
     } else {
-      this.eureca.PlayPause({ state: 'pause' });
+      this.ws.PlayPause({ state: 'pause' });
 
       $(this).val(">");
       this.player.stop();
@@ -297,7 +279,6 @@ export class ControlsPage {
     this.waveform.zoom = sampleGrouping;
     this.envelope.zoom = sampleGrouping;
     // this.master.colorPicker = this.GenerateColorPicker();
-    this.master.cpService = this.cpService;
     this.envelope.master = this.master;
     this.waveform.master = this.master;
     this.FullDraw();

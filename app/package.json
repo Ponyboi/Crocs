@@ -25,7 +25,6 @@
     "@ionic/storage": "1.1.6",
     "engine.io": "^2.0.0",
     "eureca.io": "^0.6.42",
-    "express": "^4.14.1",
     "express-device": "^0.4.2",
     "ionic-angular": "2.0.0-rc.2",
     "ionic-native": "2.2.3",

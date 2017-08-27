@@ -5,8 +5,7 @@ import { MyApp } from './app.component';
 import { ControlsPage } from '../pages/controls/controls';
 
 import { GithubUsers } from '../providers/github-users';
-import { EurecaClient } from '../providers/eureca';
-import { ColorPickerModule } from 'angular2-color-picker';
+import { WSClient } from '../providers/ws';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,6 @@ import { ColorPickerModule } from 'angular2-color-picker';
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    ColorPickerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -24,7 +22,7 @@ import { ColorPickerModule } from 'angular2-color-picker';
   ],
   providers: [
     GithubUsers,
-    EurecaClient,
+    WSClient,
   ]
 })
 export class AppModule {}

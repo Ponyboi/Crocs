@@ -14,11 +14,11 @@ export class EurecaClient {
   eurecaServer
 
   constructor(public http: Http) { 
-  	// this.eureca = {};
-  	// this.eurecaServer = {};
-  	var provider = this;
-  	this.eureca = new Eureca.Client();
-  	this.eureca.ready(function (proxy) {   
+    // this.eureca = {};
+    // this.eurecaServer = {};
+    var provider = this;
+    this.eureca = new Eureca.Client();
+    this.eureca.ready(function (proxy) {   
       provider.eurecaServer = proxy;
     });
   }
@@ -27,7 +27,7 @@ export class EurecaClient {
   }screenWidth
 
   MoveUpMouseDown() {
-  	console.log(this.eurecaServer);
+    console.log(this.eurecaServer);
     this.eurecaServer.MoveUpMouseDown();
   }
   MoveUpMouseUp() {
