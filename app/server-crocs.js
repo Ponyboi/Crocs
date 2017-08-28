@@ -62,6 +62,22 @@ if (!String.format) {
   };
 }
 
+// function handleCallback(n, t, i) {
+//     console.log(n, t, i);
+//     $(".login-register p.info:not(.message)").remove();
+//     t && this.genericCaller(t, i);
+//     n == "LoginRegister" ? ($(".lg-rg-mod .forgot-page").hide(), $(".lg-rg-mod .other-modal").hide(), $(".lg-rg-mod .tabs").fadeIn()) : n == "ForgotPassword" ? ($(".lg-rg-mod .tabs").hide(), $(".lg-rg-mod .other-modal").hide(), $(".lg-rg-mod .forgot-page").fadeIn()) : n == "Other" && ($(".lg-rg-mod .tabs").hide(), $(".lg-rg-mod .forgot-page").hide(), $(".lg-rg-mod .other-modal").fadeIn())
+// };
+function genericCaller(n) {
+    var t = [].slice.call(arguments);
+    t.shift();
+    this[n].apply(this, t)
+}
+function ServerStatus
+{
+  client.write('{ "type": "CONTROLLER", "state": "STATUS" }');
+  console.log("ServerStatus");
+}
 process.on('uncaughtException', function (err) {
     console.log(err);
 }); 

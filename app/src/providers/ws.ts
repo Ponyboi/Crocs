@@ -25,8 +25,11 @@ export class WSClient {
     var payload = { command: "ServerStatus" } 
     this.ws.send(payload);
   }
-    PlayPause(state) {
+  PlayPause(state) {
     this.ws.send(state);
+  }
+  SyncData(data) {
+    this.ws.send(data);
   }
 }
 

@@ -29,7 +29,7 @@ export class ControlsPage {
 
   // Automation
   rgb = {r: 50, g: 50, b: 50};
-  master = { zoom: 4, slider: 0 };
+  master = { zoom: 4, slider: 0, page : this };
   data = JSON.parse(localStorage.getItem("data"));
   current = { currentDevice: 0, mode: "rgb" };
   envelope:any = {};
@@ -219,9 +219,24 @@ export class ControlsPage {
     console.log(this.data);
 
     localStorage.setItem("data", JSON.stringify(this.data));
+    localStorage.setItem("datas", "hello");
   }
   Delete() {
     localStorage.setItem("data", JSON.stringify([]));
+  }
+  LoadData() {
+    var data = JSON.parse(localStorage.getItem("data"));
+    var datas = localStorage.getItem("datas");
+    console.log("data", data);
+    console.log("datas", datas);
+    console.log("this.data", this.data);
+  }
+  SyncData() {
+    // this.envelope.val.points;
+    this.ws.SyncData({ command: "syncdata", points: JSON.stringify(this.envelope.val.points) });
+  }
+  ServerStatus() {
+    this.ws.ServerStatus();
   }
   // GenerateColorPicker() {
   //   var pickerObj = new ColorPicker(this);
@@ -252,6 +267,7 @@ export class ControlsPage {
   }
   Init() {
     console.log('init');
+    console.log(this.data, this.current.currentDevice);
     this.envelope = nx.add("envelope", { w: 1000, parent: 'nexus' });
     this.waveform = nx.add("waveform", { w: 1000, parent: 'nexus' });
     this.player = new Tone.Player("PuupyCatLullaby.wav", () => {
@@ -265,9 +281,10 @@ export class ControlsPage {
     }).toMaster();
 
     // this.CanvasResize();
-
-    if (this.data != null && this.data.length > 0) {
+    console.log(this.data, this.data.length);
+    if (this.data != null) {
       this.envelope.val.points = this.data[this.current.currentDevice].rgb;
+      console.log("settter", this.data[this.current.currentDevice].rgb);
     } else {
       this.envelope.val.points = JSON.parse('[{"x":0.1,"y":0.4,"rgb":{"r":120,"g":120,"b":120}},{"x":0.35,"y":0.6,"rgb":{"r":120,"g":120,"b":120}},{"x":0.65,"y":0.2,"rgb":{"r":120,"g":120,"b":120}},{"x":0.9,"y":0.4,"rgb":{"r":120,"g":120,"b":120}}]');
     }
