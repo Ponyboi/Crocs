@@ -44,6 +44,9 @@ export class ControlsPage {
   currentRGB = { r: 50, g: 50, b: 50 };
   screenWidth = 0;
 
+  timePos = 0;
+  delayPos = 50;
+
   // SetSliderBrightness(event) {
   // 	this.eureca.SetSliderBrightness(1, event.currentTarget.value);
   // 	console.log("Slider B", event);
@@ -169,16 +172,20 @@ export class ControlsPage {
     this.FullDraw();
   }
   TimeSlider(data) {
-  // console.log(data.target.value);
-  this.master.slider = data.target.value;
-  console.log("debug", Math.round(data.target.value * (this.waveform.duration / this.master.zoom) * 10));
-  this.envelope.pos = Math.round((data.target.value * ((this.waveform.duration - (this.waveform.duration * (1/(this.waveform.duration / this.master.zoom)))) / this.master.zoom) * 10));
-  this.waveform.pos = Math.round((data.target.value * ((this.waveform.duration - (this.waveform.duration * (1/(this.waveform.duration / this.master.zoom)))) / this.master.zoom) * 10));
-  // waveform.definition = data.target.value / 10;
-  this.envelope.master = this.master;
-  this.waveform.master = this.master;
-  this.FullDraw();
-}
+    console.log("TimeSlider data: ", data);
+    console.log("TimeSlider value: ", data.value);
+    this.master.slider = data.value;
+    console.log("debug", Math.round(data.value * (this.waveform.duration / this.master.zoom) * 10));
+    this.envelope.pos = Math.round((data.value * ((this.waveform.duration - (this.waveform.duration * (1/(this.waveform.duration / this.master.zoom)))) / this.master.zoom) * 10));
+    this.waveform.pos = Math.round((data.value * ((this.waveform.duration - (this.waveform.duration * (1/(this.waveform.duration / this.master.zoom)))) / this.master.zoom) * 10));
+    // waveform.definition = data.target.value / 10;
+    this.envelope.master = this.master;
+    this.waveform.master = this.master;
+    this.FullDraw();
+  }
+  BroadcastDelay(data) {
+    this.ws.BroadcastDelay({ delay: data.value });
+  }
   ZoomMinus() {
     this.master.zoom = this.master.zoom / 2;
     $('.zoom-value').html(this.master.zoom);
@@ -233,10 +240,10 @@ export class ControlsPage {
   }
   SyncData() {
     // this.envelope.val.points;
-    this.ws.SyncData({ command: "syncdata", points: JSON.stringify(this.envelope.val.points) });
+    this.ws.SyncData({ points: this.envelope.val.points });
   }
   ServerStatus() {
-    this.ws.ServerStatus();
+    this.ws.ServerStatus("Test");
   }
   // GenerateColorPicker() {
   //   var pickerObj = new ColorPicker(this);
@@ -281,7 +288,7 @@ export class ControlsPage {
     }).toMaster();
 
     // this.CanvasResize();
-    console.log(this.data, this.data.length);
+    console.log(this.data);
     if (this.data != null) {
       this.envelope.val.points = this.data[this.current.currentDevice].rgb;
       console.log("settter", this.data[this.current.currentDevice].rgb);

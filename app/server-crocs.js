@@ -1,3 +1,4 @@
+'use strict'
 //express server setup
 var express = require('express')
   , app = express(app)
@@ -22,10 +23,43 @@ var bulbs = [];
 var players = {};
 var spectators = {};
 var messages = {};
+var automation = {};
+var delay = 50;
 
 //track disconnect timeouts
 var disconnects = {};
-  
+
+class Crocs
+{
+  constructor(name){
+    this.name = name;
+  }
+
+  GenericCaller(data) 
+  {
+    var data = JSON.parse(data);
+    if (data.command != null) {
+      this[data.command].apply(this, [data.payload]);
+    }
+  }
+  SyncData(data) {
+    automation = data.points;
+  }
+  BroadcastDelay(data) {
+    delay = data.delay;
+  }
+  ServerStatus(data)
+  {
+    console.log("ServerStatus " + data);
+    console.log("automation: " + JSON.stringify(automation));
+    console.log("delay: " + delay);
+  }
+  print()
+  {
+    console.log('Name is :'+ this.name);
+  }
+}
+var crocs = new Crocs('Crocs Server');
  
 app.use(function (req, res, next) {
   console.log('middleware');
@@ -46,6 +80,8 @@ app.get('/', function(req, res, next) {
 app.ws('/', function(ws, req) {
   ws.on('message', function(msg) {
     console.log(msg);
+    console.log(msg.command);
+    crocs.GenericCaller(msg);
   });
   console.log('socket', req.testing);
 });
@@ -62,22 +98,6 @@ if (!String.format) {
   };
 }
 
-// function handleCallback(n, t, i) {
-//     console.log(n, t, i);
-//     $(".login-register p.info:not(.message)").remove();
-//     t && this.genericCaller(t, i);
-//     n == "LoginRegister" ? ($(".lg-rg-mod .forgot-page").hide(), $(".lg-rg-mod .other-modal").hide(), $(".lg-rg-mod .tabs").fadeIn()) : n == "ForgotPassword" ? ($(".lg-rg-mod .tabs").hide(), $(".lg-rg-mod .other-modal").hide(), $(".lg-rg-mod .forgot-page").fadeIn()) : n == "Other" && ($(".lg-rg-mod .tabs").hide(), $(".lg-rg-mod .forgot-page").hide(), $(".lg-rg-mod .other-modal").fadeIn())
-// };
-function genericCaller(n) {
-    var t = [].slice.call(arguments);
-    t.shift();
-    this[n].apply(this, t)
-}
-function ServerStatus
-{
-  client.write('{ "type": "CONTROLLER", "state": "STATUS" }');
-  console.log("ServerStatus");
-}
 process.on('uncaughtException', function (err) {
     console.log(err);
 }); 
@@ -86,7 +106,7 @@ var port = process.env.PORT || 8080;
 // app.listen(port);
 server.listen(port);
 
-console.log('\033[96m'+'Listening on ' + port +'\033[39m');
+console.log('Listening on ' + port);
 
 // eurecaServer.exports.ServerStatus = function () 
 // {

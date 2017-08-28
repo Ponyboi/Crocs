@@ -8,3 +8,11 @@ page-controls {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.item-range.delay-slider ion-range {
+	width: 100px;
+	display: inline-block;
+}
+.item-range.delay-slider {
+	display: inline-block;
+	width: initial;
+}

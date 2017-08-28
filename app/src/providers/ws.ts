@@ -21,15 +21,21 @@ export class WSClient {
     //   provider.eurecaServer = proxy;
     // });
   }
-  ServerStatus() {
-    var payload = { command: "ServerStatus" } 
-    this.ws.send(payload);
+  ServerStatus(title) {
+    var payload = { command: "ServerStatus", payload: title };
+    this.ws.send(JSON.stringify(payload));
   }
   PlayPause(state) {
-    this.ws.send(state);
+    var payload = { command: "PlayPause", payload: state };
+    this.ws.send(JSON.stringify(payload));
+  }
+  BroadcastDelay(delay) {
+    var payload = { command: "BroadcastDelay", payload: delay };
+    this.ws.send(JSON.stringify(payload));
   }
   SyncData(data) {
-    this.ws.send(data);
+    var payload = { command: "SyncData", payload: data };
+    this.ws.send(JSON.stringify(payload));
   }
 }
 

@@ -30,11 +30,17 @@
 
 		<div id="nexus"></div>
 	  <div class="controls">
-			<input class="time-slider" type="range" value="0" (input)="TimeSlider($event)" />
+	  		<ion-item>
+		      <ion-range class="time-slider" min="0" max="100" value="0" pin="true" (ionChange)="TimeSlider($event)" [(ngModel)]="timePos" color="secondary"></ion-range>
+		    </ion-item>
+			<!-- <input class="time-slider" type="range" value="0" (input)="TimeSlider($event)" /> -->
 			<button ion-button class="play-pause button"  type="button" value=">" (click)="PlayPause()">play</button>
 			<button ion-button class="zoom-minus button" type="button" value="-" (click)="ZoomMinus()">-</button>
 			<div class="zoom-value button" type="button"></div>
 			<button ion-button class="zoom-plus button" type="button" value="+" (click)="ZoomPlus()">+</button>
+			<ion-item class="delay-slider">
+		      <ion-range min="0" max="200" value="50" pin="true" (ionChange)="BroadcastDelay($event)" [(ngModel)]="delayPos" color="secondary"></ion-range>
+		    </ion-item>
 			<button ion-button type="button" class="switch button" value="rgb" (click)="Switch()">switch</button>
 			<button ion-button type="button" class="save button" value="save" (click)="Save()">save</button>
 			<button ion-button type="button" class="load button" value="load" (click)="LoadData()">load</button>
